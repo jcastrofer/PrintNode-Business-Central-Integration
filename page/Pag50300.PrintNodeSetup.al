@@ -30,6 +30,20 @@ page 50300 "PrintNode Setup"
                 {
                     ApplicationArea = All;
                 }
+                field("Default Printer ID"; "Default Printer ID")
+                {
+                    ApplicationArea = All;
+                    trigger OnValidate()
+                    begin
+                        CurrPage.Update();
+                    end;
+                }
+                field("Default Printer Name"; "Default Printer Name")
+                {
+                    ApplicationArea = All;
+                }
+
+
 
 
 
@@ -70,6 +84,49 @@ page 50300 "PrintNode Setup"
                     SalesHeader.setrange("Document Type", SalesHeader."Document Type"::Order);
                     SalesHeader.FindFirst();
                     PrintNodeMgt.SendReportToPrintNode(report::"Order Confirmation", SalesHeader, format(SalesHeader."Document Type") + '-' + SalesHeader."No.");
+                end;
+            }
+            action(OpenEmailWeb)
+            {
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = Web;
+                Caption = 'Open PrintNode E-mail Setup';
+
+                trigger OnAction();
+                begin
+                    Hyperlink('https://app.printnode.com/email');
+                end;
+            }
+            action(OpenAPIKeysSite)
+            {
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = Web;
+                Caption = 'Open PrintNode API Keys';
+
+                trigger OnAction();
+                begin
+                    Hyperlink('https://app.printnode.com/apikeys');
+                end;
+            }
+            action(GetPrinters)
+            {
+                ApplicationArea = All;
+                Caption = 'Get PrintNode Printers';
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = Print;
+                trigger OnAction()
+                var
+                    PrintNodeMgt: Codeunit "Print Node Management";
+                begin
+                    PrintNodeMgt.GetPrinters();
                 end;
             }
         }

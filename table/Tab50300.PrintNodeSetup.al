@@ -24,6 +24,21 @@ table 50300 "PrintNode Setup"
             Caption = 'Enable PrintNode Integration';
             DataClassification = ToBeClassified;
         }
+        field(5; "Default Printer ID"; code[20])
+        {
+            Caption = 'Default Printer ID';
+            DataClassification = ToBeClassified;
+            TableRelation = "PrintNode Printer"."Printer ID";
+        }
+        field(6; "Default Printer Name"; Text[250])
+        {
+            Caption = 'Default Printer Name';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = lookup ("PrintNode Printer"."Printer Name" where ("Printer ID" = field ("Default Printer ID")));
+        }
+
+
 
         field(10; "PrintNode Base Endpoint"; Text[150])
         {

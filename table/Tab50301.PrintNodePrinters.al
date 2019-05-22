@@ -21,9 +21,12 @@ table 50301 "PrintNode Printer"
             Caption = 'ID';
             DataClassification = ToBeClassified;
         }
-
-
-
+        field(4; "State"; Text[100])
+        {
+            Caption = 'State';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
     }
 
     keys
@@ -33,6 +36,7 @@ table 50301 "PrintNode Printer"
             Clustered = true;
         }
     }
+
     fieldgroups
     {
         fieldgroup(Dropdown; "Printer ID", "Printer Name")
@@ -40,5 +44,4 @@ table 50301 "PrintNode Printer"
 
         }
     }
-
 }

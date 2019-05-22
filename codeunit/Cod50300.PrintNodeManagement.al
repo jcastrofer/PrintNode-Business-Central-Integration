@@ -6,20 +6,28 @@ codeunit 50300 "Print Node Management"
         DataTypeMgt: Codeunit "Data Type Management";
         PrintNodePrinters: Record "PrintNode Printer";
         PrintNodePrinterSelection: Record "PrintNode Printer Selection";
+        PrintNodeSetup: Record "PrintNode Setup";
         TempBlob: Record TempBlob temporary;
         OStream: OutStream;
-        Parameters: Text;
-        OrderConfirmation: Report "Order Confirmation";
+        PrinterID: Code[20];
     begin
         if not RecVariant.IsRecord then
             exit;
         if ReportID = 0 then
             exit;
 
+        PrintNodeSetup.Reset();
+        if not PrintNodeSetup.Get() then
+            PrintNodeSetup.InsertIfNotExists();
+        if not PrintNodeSetup."Enable PrintNode Integration" then
+            exit;
+        PrintNodeSetup.TestField("Default Printer ID");
+
         clear(RecRef);
         ClearLastError();
         clear(TempBlob);
         clear(OStream);
+
 
         PrintNodePrinterSelection.Reset();
         PrintNodePrinterSelection.setrange("Report ID", ReportID);
@@ -27,12 +35,16 @@ codeunit 50300 "Print Node Management"
         if not PrintNodePrinterSelection.findset then begin
             PrintNodePrinterSelection.setrange("User ID", '');
             if not PrintNodePrinterSelection.findset then
-                exit;
-        end;
-        PrintNodePrinterSelection.testfield("Printer ID");
+                PrinterID := PrintNodeSetup."Default Printer ID"
+            else
+                PrinterID := PrintNodePrinterSelection."Printer ID";
+        end else
+            PrinterID := PrintNodePrinterSelection."Printer ID";
+        if PrinterID = '' then
+            error('Printer configuration is missing for ReportID ' + format(ReportID));
 
         PrintNodePrinters.Reset();
-        PrintNodePrinters.get(PrintNodePrinterSelection."Printer ID");
+        PrintNodePrinters.get(PrinterID);
 
         if not DataTypeMgt.GetRecordRef(RecVariant, RecRef) then
             error('An unexpected error ocurred: ' + GetLastErrorText);
@@ -42,10 +54,10 @@ codeunit 50300 "Print Node Management"
         if not Report.SaveAs(ReportID, '', ReportFormat::Pdf, OStream, RecRef) then
             error('The PDF file could not be generated: ' + GetLastErrorText);
 
-        NewPrintJob(TempBlob, PrintNodePrinterSelection, PrintJobTitle);
+        NewPrintJob(TempBlob, PrinterID, PrintJobTitle);
     end;
 
-    local procedure NewPrintJob(TempBlob: Record TempBlob; PrintNodePrinterSelection: Record "PrintNode Printer Selection"; PrintJobTitle: text)
+    local procedure NewPrintJob(TempBlob: Record TempBlob; PrinterID: Code[20]; PrintJobTitle: text)
     var
         Client: HttpClient;
         Content: HttpContent;
@@ -66,11 +78,11 @@ codeunit 50300 "Print Node Management"
         if not PrintNodeSetup."Enable PrintNode Integration" then
             exit;
 
-        if PrintNodePrinterSelection."Printer ID" = '' then
+        if PrinterID = '' then
             exit;
 
         PrintNodePrinter.Reset();
-        PrintNodePrinter.get(PrintNodePrinterSelection."Printer ID");
+        PrintNodePrinter.get(PrinterID);
 
         PrintNodeSetup.testfield("PrintNode Base Endpoint");
         PrintNodeSetup.testfield("PrintNode PrintJob Resource");
@@ -102,12 +114,22 @@ codeunit 50300 "Print Node Management"
         RequestMessage: HttpRequestMessage;
         ResponseMessage: HttpResponseMessage;
         PrintNodeSetup: Record "PrintNode Setup";
+        PrintNodePrinter: Record "PrintNode Printer";
         ErrConn: Label 'An error ocurred connecting to PrintNode';
         URI: Text;
         ContentTxt: Text;
         jToken: JsonToken;
         jToken2: JsonToken;
+        jArray: JsonArray;
+        jObject: JsonObject;
+        i: Integer;
+        Stop: Boolean;
+        IDTxt: Text;
+        DescriptionTxt: Text;
+        stateTxt: Text;
     begin
+        if not Confirm('Do you wish to retrieve all the printers in your account?') then
+            exit;
         PrintNodeSetup.Reset();
         PrintNodeSetup.Get();
         if not PrintNodeSetup."Enable PrintNode Integration" then
@@ -115,6 +137,9 @@ codeunit 50300 "Print Node Management"
 
         PrintNodeSetup.testfield("PrintNode Base Endpoint");
         PrintNodeSetup.testfield("PrintNode Printers Resource");
+
+        PrintNodePrinter.Reset();
+        PrintNodePrinter.DeleteAll();
 
         URI := PrintNodeSetup."PrintNode Base Endpoint" + PrintNodeSetup."PrintNode Printers Resource";
         client.DefaultRequestHeaders.Add('Authorization', 'Basic ' + GetAPIKeyBase64());
@@ -125,9 +150,38 @@ codeunit 50300 "Print Node Management"
         Content := ResponseMessage.Content;
 
         Content.ReadAs(ContentTxt);
-        jToken.ReadFrom(ContentTxt);
-        //jToken.SelectToken(,jToken2); //TODO pendiente de terminar la importación de info impresoras
-        //message(ContentTxt);
+
+        jArray.ReadFrom(ContentTxt);
+        Stop := false;
+        while not Stop do begin
+            if not jArray.Get(i, jToken) then
+                Stop := true;
+            jObject := jToken.AsObject();
+
+            jObject.Get('description', jToken2);
+            jToken2.WriteTo(DescriptionTxt);
+            DescriptionTxt := DelChr(DescriptionTxt, '=', '"');
+
+            jObject.Get('id', jToken2);
+            jToken2.WriteTo(IDTxt);
+
+            jObject.Get('state', jToken2);
+            jToken2.WriteTo(stateTxt);
+            stateTxt := DelChr(stateTxt, '=', '"');
+
+            if (IDTxt <> '') and (DescriptionTxt <> '') then begin
+                PrintNodePrinter.Init();
+                PrintNodePrinter."Printer ID" := IDTxt;
+                PrintNodePrinter."Printer Name" := Copystr(DescriptionTxt, 1, MaxStrLen(PrintNodePrinter."Printer Name"));
+                PrintNodePrinter.State := stateTxt;
+                if PrintNodePrinter.Insert() then;
+            end;
+
+            i += 1;
+        end;
+        Message('Process finished');
+
+
     end;
 
     local procedure GetAPIKey(): Text

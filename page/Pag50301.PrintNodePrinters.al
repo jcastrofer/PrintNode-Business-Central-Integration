@@ -21,6 +21,11 @@ page 50301 "PrintNode Printers"
                 {
                     ApplicationArea = All;
                 }
+                field(State; State)
+                {
+                    ApplicationArea = All;
+                }
+
             }
         }
         area(Factboxes)
@@ -33,20 +38,22 @@ page 50301 "PrintNode Printers"
     {
         area(Processing)
         {
-            action(OpenEmailWeb)
+            action(GetPrinters)
             {
                 ApplicationArea = All;
+                Caption = 'Get PrintNode Printers';
                 Promoted = true;
                 PromotedIsBig = true;
-                Image = Web;
-                Caption = 'Open PrintNode E-mail Setup';
-
-                trigger OnAction();
+                PromotedCategory = Process;
+                Image = Print;
+                trigger OnAction()
+                var
+                    PrintNodeMgt: Codeunit "Print Node Management";
                 begin
-                    Hyperlink('https://app.printnode.com/email');
+                    PrintNodeMgt.GetPrinters();
+                    CurrPage.Update();
                 end;
             }
-
         }
     }
 }
