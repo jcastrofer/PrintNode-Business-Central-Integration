@@ -12,7 +12,7 @@ In order to begin, go through the following steps:
 5. Go to the "PrintNode Setup" page (you can search it in BC) and input the e-mail account, the APIKey generated previously
 6. In the "PrintNode Setup" window, click on the "Get PrintNode Printers". If all goes well, you can check the printers in the "PrintNode Printers" window.
 7. In the "PrintNode Setup" window, set a default printer in the "Default Printer ID".
-8. In the "PrinterNode Printer Selection" set up the printers you wish to use for each report and UserID.
+8. In the "PrinterNode Printer Selection" set up the printers you wish to use for each report and UserID (just like the standard Printer Selection window).
 
 As far as the set up goes, you're done. All you have to do now is set up your extension to access this one and take advantage of it, or include the objects of this extension in your own extensions.
 
