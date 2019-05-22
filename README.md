@@ -20,4 +20,4 @@ In order to create the dependency, in your app.json, add the dependencies to thi
 
 Once you're done, just declare a variable in your code, Codeunit: "PrintNode Management", and call the **SendReportToPrintNode(ReportID: Integer; RecVariant: Variant; PrintJobTitle: Text)** function and call it whenever necessary.
 
-If you have any doubts or comments, you can find me on twitter.com/jcastrofer
+If you have any doubts or comments, you can find me on http://twitter.com/jcastrofer
