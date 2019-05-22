@@ -1,10 +1,10 @@
 {
   "id": "66dabe22-06c6-4a18-82b2-ed37782b5b34",
   "name": "PrintNode Integration",
-  "publisher": "José Castro",
+  "publisher": "José Castro Fernández",
   "version": "1.0.0.0",
   "brief": "",
-  "description": "",
+  "description": "This extension integrates in full AL with PrintNode.com. Enjoy!",
   "privacyStatement": "",
   "EULA": "",
   "help": "",
@@ -20,7 +20,7 @@
       "to": 50349
     }
   ],
-  "contextSensitiveHelpUrl": "https://PrintNodeIntegration.com/help/",
+  "contextSensitiveHelpUrl": "https://help/",
   "showMyCode": false,
   "runtime": "3.0"
 }

@@ -110,7 +110,6 @@ codeunit 50300 "Print Node Management"
     var
         Client: HttpClient;
         Content: HttpContent;
-        //Headers: HttpHeaders;
         RequestMessage: HttpRequestMessage;
         ResponseMessage: HttpResponseMessage;
         PrintNodeSetup: Record "PrintNode Setup";
