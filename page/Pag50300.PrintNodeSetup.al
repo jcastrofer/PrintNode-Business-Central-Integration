@@ -77,7 +77,7 @@ page 50300 "PrintNode Setup"
 
                 trigger OnAction()
                 var
-                    PrintNodeMgt: Codeunit "Print Node Management";
+                    PrintNodeMgt: Codeunit "PrintNode Management";
                     SalesHeader: Record "Sales Header";
                 begin
                     SalesHeader.Reset();
@@ -124,7 +124,7 @@ page 50300 "PrintNode Setup"
                 Image = Print;
                 trigger OnAction()
                 var
-                    PrintNodeMgt: Codeunit "Print Node Management";
+                    PrintNodeMgt: Codeunit "PrintNode Management";
                 begin
                     PrintNodeMgt.GetPrinters();
                 end;

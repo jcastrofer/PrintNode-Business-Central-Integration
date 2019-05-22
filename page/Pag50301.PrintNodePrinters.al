@@ -48,7 +48,7 @@ page 50301 "PrintNode Printers"
                 Image = Print;
                 trigger OnAction()
                 var
-                    PrintNodeMgt: Codeunit "Print Node Management";
+                    PrintNodeMgt: Codeunit "PrintNode Management";
                 begin
                     PrintNodeMgt.GetPrinters();
                     CurrPage.Update();

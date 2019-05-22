@@ -1,4 +1,4 @@
-codeunit 50300 "Print Node Management"
+codeunit 50300 "PrintNode Management"
 {
     procedure SendReportToPrintNode(ReportID: Integer; RecVariant: Variant; PrintJobTitle: text)
     var
