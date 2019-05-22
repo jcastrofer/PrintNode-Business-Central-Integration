@@ -21,6 +21,6 @@
     }
   ],
   "contextSensitiveHelpUrl": "https://PrintNodeIntegration.com/help/",
-  "showMyCode": true,
+  "showMyCode": false,
   "runtime": "3.0"
 }
