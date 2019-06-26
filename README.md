@@ -13,7 +13,7 @@ In order to begin, go through the following steps:
 6. In the "PrintNode Setup" window, click on the "Get PrintNode Printers". If all goes well, you can check the printers in the "PrintNode Printers" window.
 7. In the "PrintNode Setup" window, set a default printer in the "Default Printer ID".
 8. In the "PrinterNode Printer Selection" set up the printers you wish to use for each report and UserID (just like the standard Printer Selection window).
-8.1. If you were to need special options for a specific print (specific printer paper size for example) you can use the the Print job options provided by PrintNode (https://www.printnode.com/es/docs/api/curl#printjobs) in the Printjob options field available in the "PrintNode Printer Selection" window. 
+    1. If you were to need special options for a specific print (specific printer paper size for example) you can use the the Print job options provided by PrintNode (https://www.printnode.com/es/docs/api/curl#printjobs) in the Printjob options field available in the "PrintNode Printer Selection" window. 
 
 As far as the set up goes, you're done. All you have to do now is set up your extension to access this one and take advantage of it, or include the objects of this extension in your own extensions.
 
