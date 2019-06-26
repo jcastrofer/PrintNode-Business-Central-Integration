@@ -54,10 +54,51 @@ codeunit 50300 "PrintNode Management"
         if not Report.SaveAs(ReportID, '', ReportFormat::Pdf, OStream, RecRef) then
             error('The PDF file could not be generated: ' + GetLastErrorText);
 
-        NewPrintJob(TempBlob, PrinterID, PrintJobTitle);
+        NewPrintJob(TempBlob, PrinterID, PrintJobTitle, PrintNodePrinterSelection."PrintJob Options ");
     end;
 
-    local procedure NewPrintJob(TempBlob: Record TempBlob; PrinterID: Code[20]; PrintJobTitle: text)
+    procedure SendReportBlobToPrintNode(ReportID: Integer; TempBlob: Record TempBlob; PrintJobTitle: text)
+    var
+
+        PrintNodePrinters: Record "PrintNode Printer";
+        PrintNodePrinterSelection: Record "PrintNode Printer Selection";
+        PrintNodeSetup: Record "PrintNode Setup";
+        PrinterID: Code[20];
+    begin
+        if ReportID = 0 then
+            exit;
+
+        PrintNodeSetup.Reset();
+        if not PrintNodeSetup.Get() then
+            PrintNodeSetup.InsertIfNotExists();
+        if not PrintNodeSetup."Enable PrintNode Integration" then
+            exit;
+        PrintNodeSetup.TestField("Default Printer ID");
+
+        ClearLastError();
+
+
+        PrintNodePrinterSelection.Reset();
+        PrintNodePrinterSelection.setrange("Report ID", ReportID);
+        PrintNodePrinterSelection.setrange("User ID", UserId);
+        if not PrintNodePrinterSelection.findset then begin
+            PrintNodePrinterSelection.setrange("User ID", '');
+            if not PrintNodePrinterSelection.findset then
+                PrinterID := PrintNodeSetup."Default Printer ID"
+            else
+                PrinterID := PrintNodePrinterSelection."Printer ID";
+        end else
+            PrinterID := PrintNodePrinterSelection."Printer ID";
+        if PrinterID = '' then
+            error('Printer configuration is missing for ReportID ' + format(ReportID));
+
+        PrintNodePrinters.Reset();
+        PrintNodePrinters.get(PrinterID);
+
+        NewPrintJob(TempBlob, PrinterID, PrintJobTitle, PrintNodePrinterSelection."PrintJob Options ");
+    end;
+
+    local procedure NewPrintJob(TempBlob: Record TempBlob; PrinterID: Code[20]; PrintJobTitle: text; PrintJobOptions: Text)
     var
         Client: HttpClient;
         Content: HttpContent;
@@ -96,6 +137,8 @@ codeunit 50300 "PrintNode Management"
         jObject.Add('contentType', 'pdf_base64');
         jObject.Add('content', TempBlob.ToBase64String());
         jObject.Add('source', 'Business Central PrintNode Integration');
+        if PrintJobOptions <> '' then
+            jObject.Add('options', PrintJobOptions);
         jObject.WriteTo(ContentTxt);
 
         content.WriteFrom(ContentTxt);

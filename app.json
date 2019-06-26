@@ -2,7 +2,7 @@
   "id": "66dabe22-06c6-4a18-82b2-ed37782b5b34",
   "name": "PrintNode Integration",
   "publisher": "José Castro Fernández",
-  "version": "1.0.0.0",
+  "version": "1.0.0.1",
   "brief": "",
   "description": "This extension integrates in full AL with PrintNode.com. Enjoy!",
   "privacyStatement": "",

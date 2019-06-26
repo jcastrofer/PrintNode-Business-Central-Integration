@@ -28,6 +28,11 @@ page 50302 "PrintNode Printer Selection"
                 {
                     ApplicationArea = All;
                 }
+                field("PrintJob Options "; "PrintJob Options ")
+                {
+                    ApplicationArea = All;
+                }
+
 
             }
         }

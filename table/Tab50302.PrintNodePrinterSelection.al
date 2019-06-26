@@ -44,6 +44,12 @@ table 50302 "PrintNode Printer Selection"
             FieldClass = FlowField;
             CalcFormula = Lookup (AllObjWithCaption."Object Caption" WHERE ("Object Type" = CONST (Report), "Object ID" = FIELD ("Report ID")));
         }
+        field(5; "PrintJob Options "; text[250])
+        {
+            Caption = 'PrintJob Options ';
+            DataClassification = ToBeClassified;
+        }
+        
 
 
     }
