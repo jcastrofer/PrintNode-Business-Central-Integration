@@ -20,5 +20,6 @@ As far as the set up goes, you're done. All you have to do now is set up your ex
 In order to create the dependency, in your app.json, add the dependencies to this extension. For more information on how to do that, check this link: https://www.hougaard.com/how-to-reference-another-extension-from-an-extension/
 
 Once you're done, just declare a variable in your code, Codeunit: "PrintNode Management", and call the **SendReportToPrintNode(ReportID: Integer; RecVariant: Variant; PrintJobTitle: Text)** function and call it whenever necessary.
+In case you need to print a special kind of report, you can generate it and save it in a Blob (TempBlob). After, just call the **SendReportBlobToPrintNode(ReportID: Integer; TempBlob: Record TempBlob; PrintJobTitle: text)** function.
 
 If you have any doubts or comments, you can find me on http://twitter.com/jcastrofer
