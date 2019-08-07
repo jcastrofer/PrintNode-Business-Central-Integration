@@ -140,7 +140,7 @@ codeunit 50300 "PrintNode Management"
         //if PrintJobOptions <> '' then
         //    jObject.Add('options', PrintJobOptions);
         jObject.WriteTo(ContentTxt);
-        if PrintJobOptions <> '' then //TODO verificar que esto funcione bien
+        if PrintJobOptions <> '' then
             ContentTxt := copystr(ContentTxt, 1, strlen(ContentTxt) - 1) + ', "options": {' + PrintJobOptions + '}}';
 
         content.WriteFrom(ContentTxt);
