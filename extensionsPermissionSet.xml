@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PermissionSets>
-  <PermissionSet RoleID="PRINTNODE INTEGRATION" RoleName="PrintNode Integration">
+  <PermissionSet RoleID="PRINTNODE INTEGRATION V2" RoleName="PrintNode Integration v2">
     <Permission>
       <ObjectType>5</ObjectType>
-      <ObjectID>50301</ObjectID>
+      <ObjectID>50300</ObjectID>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
       <ModifyPermission>0</ModifyPermission>
@@ -13,7 +13,7 @@
     </Permission>
     <Permission>
       <ObjectType>5</ObjectType>
-      <ObjectID>50300</ObjectID>
+      <ObjectID>50301</ObjectID>
       <ReadPermission>0</ReadPermission>
       <InsertPermission>0</InsertPermission>
       <ModifyPermission>0</ModifyPermission>

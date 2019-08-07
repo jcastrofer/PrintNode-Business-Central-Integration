@@ -137,9 +137,11 @@ codeunit 50300 "PrintNode Management"
         jObject.Add('contentType', 'pdf_base64');
         jObject.Add('content', TempBlob.ToBase64String());
         jObject.Add('source', 'Business Central PrintNode Integration');
-        if PrintJobOptions <> '' then
-            jObject.Add('options', PrintJobOptions);
+        //if PrintJobOptions <> '' then
+        //    jObject.Add('options', PrintJobOptions);
         jObject.WriteTo(ContentTxt);
+        if PrintJobOptions <> '' then //TODO verificar que esto funcione bien
+            ContentTxt := copystr(ContentTxt, 1, strlen(ContentTxt) - 1) + ', "options": {' + PrintJobOptions + '}}';
 
         content.WriteFrom(ContentTxt);
 

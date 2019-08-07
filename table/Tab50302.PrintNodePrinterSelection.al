@@ -25,6 +25,7 @@ table 50302 "PrintNode Printer Selection"
                 UserMgt.LookupUserID("User ID");
             end;
         }
+        
         field(2; "Report ID"; Integer)
         {
             Caption = 'Report ID';

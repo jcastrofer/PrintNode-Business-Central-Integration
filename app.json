@@ -1,8 +1,8 @@
 {
-  "id": "66dabe22-06c6-4a18-82b2-ed37782b5b34",
-  "name": "PrintNode Integration",
+  "id": "129c925f-abaf-4baa-87c8-7b1cc022312b",
+  "name": "PrintNode Integration v2",
   "publisher": "José Castro Fernández",
-  "version": "1.0.0.1",
+  "version": "2.0.0.0",
   "brief": "",
   "description": "This extension integrates in full AL with PrintNode.com. Enjoy!",
   "privacyStatement": "",
@@ -20,7 +20,7 @@
       "to": 50349
     }
   ],
-  "contextSensitiveHelpUrl": "https://help/",
-  "showMyCode": false,
+  "contextSensitiveHelpUrl": "https://PrintNode-Business-Central-Integration-v2.com/help/",
+  "showMyCode": true,
   "runtime": "3.0"
 }
